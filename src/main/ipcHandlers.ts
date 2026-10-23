@@ -81,9 +81,8 @@ const setupIpcHandlers = (
     shell.openExternal(url);
   });
 
-  ipcMain.on('get-browser-version', async (event) => {
-    const version = await getBrowserVersionFromOS();
-    event.returnValue = version;
+  ipcMain.on('get-browser-version', (event) => {
+    event.returnValue = getBrowserVersionFromOS();
   });
 
   ipcMain.on('notification', async (event, title, message) => {

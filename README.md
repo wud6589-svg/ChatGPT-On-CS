@@ -108,6 +108,8 @@
 
 功能怎么用，看上方「产品演示」那六段片子；产品能力与各应用说明见官网：[📘 jinxiaoai.com/apps](https://jinxiaoai.com/apps?utm_source=github&utm_medium=readme&utm_campaign=repo_guide&utm_content=apps)
 
+macOS（Apple Silicon）从源码运行、打包，以及如何添加拼多多店铺，见 [MAC.md](./MAC.md)。Windows 安装包和 `__main__.exe` 策略程序的行为不变。
+
 ## 🗓 产品路线图
 
 ### ✅ 已完成功能

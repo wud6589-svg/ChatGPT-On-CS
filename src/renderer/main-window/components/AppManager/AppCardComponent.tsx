@@ -1,10 +1,9 @@
 import React from 'react';
 import {
-  Box,
   Flex,
   Image,
+  Text,
   Badge,
-  HStack,
   IconButton,
   Tooltip,
 } from '@chakra-ui/react';
@@ -36,83 +35,78 @@ const AppCardComponent = ({
   openSettings,
   instances,
 }: AppCardComponentProps) => {
+  const selected = selectedAppId === app.id;
   const appInstancesCount = instances.filter(
     (instance) => instance.app_id === app.id,
   ).length;
 
   return (
     <Flex
-      bg="gray.100"
+      bg={selected ? 'white' : 'transparent'}
+      borderWidth="1px"
+      borderColor={selected ? 'teal.400' : 'transparent'}
       borderRadius="md"
-      p={3}
+      px={2}
+      py={1.5}
       align="center"
-      position="relative"
-      outline={
-        selectedAppId === app.id
-          ? '3px solid var(--chakra-colors-teal-300)'
-          : 'none'
-      }
       cursor="pointer"
+      _hover={{
+        bg: 'white',
+        borderColor: selected ? 'teal.400' : 'gray.200',
+      }}
       onClick={() => {
         setSelectedAppId(app.id);
       }}
     >
+      <Image
+        src={app.avatar || defaultPlatformIcon}
+        fallbackSrc={defaultPlatformIcon}
+        boxSize="22px"
+        borderRadius="sm"
+        mr={2}
+        flexShrink={0}
+      />
+      <Text
+        fontSize="sm"
+        fontWeight={selected ? '600' : '500'}
+        color="gray.800"
+        noOfLines={1}
+        flex="1"
+      >
+        {app.name}
+      </Text>
+      {app.env === 'desktop' && (
+        <Tooltip label="客户端应用，需要先手动打开该应用">
+          <Image src={windowsIcon} boxSize="14px" ml={1} alt="desktop" />
+        </Tooltip>
+      )}
       {appInstancesCount > 0 && (
-        <Box
-          position="absolute"
-          top="-5px"
-          right="-5px"
-          bg="red.500"
-          color="white"
+        <Badge
+          ml={1}
+          colorScheme="teal"
           borderRadius="full"
-          width="20px"
-          height="20px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          fontSize="12px"
+          fontSize="10px"
+          px={1.5}
         >
           {appInstancesCount}
-        </Box>
+        </Badge>
       )}
-      <Box position="relative" marginRight="12px">
-        <Image
-          src={app.avatar || defaultPlatformIcon}
-          fallbackSrc={defaultPlatformIcon}
-          boxSize="25px"
+      <Tooltip label={`设置 ${app.name} 平台`}>
+        <IconButton
+          variant="unstyled"
+          aria-label={`设置 ${app.name} 平台`}
+          icon={<SettingsIcon boxSize="12px" />}
+          minW={5}
+          h={5}
+          ml={1}
+          color="gray.400"
+          _hover={{ color: 'gray.700' }}
+          onClick={(e) => {
+            e.stopPropagation();
+            openSettings(true);
+          }}
         />
-        {app.env === 'desktop' && (
-          <Tooltip label="客户端应用，需要先手动打开该应用">
-            <Image
-              src={windowsIcon}
-              boxSize="15px"
-              position="absolute"
-              top="-5px"
-              right="-5px"
-              alt="windows"
-            />
-          </Tooltip>
-        )}
-      </Box>
-      <HStack align="center" flex="1">
-        <Badge colorScheme="gray">{app.name}</Badge>
-      </HStack>
-      <Box position="absolute" bottom="5px" right="-5px">
-        <Tooltip label={`设置 ${app.name} 平台`}>
-          <IconButton
-            variant="borderless"
-            aria-label={`设置 ${app.name} 平台`}
-            fontSize="15px"
-            w={4}
-            h={4}
-            icon={<SettingsIcon />}
-            onClick={(e) => {
-              e.stopPropagation();
-              openSettings(true);
-            }}
-          />
-        </Tooltip>
-      </Box>
+      </Tooltip>
     </Flex>
   );
 };

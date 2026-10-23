@@ -1,10 +1,6 @@
 import React from 'react';
-import { Box, Flex, Text, Button } from '@chakra-ui/react';
-import {
-  SettingsIcon,
-  ChatIcon,
-  CalendarIcon,
-} from '@chakra-ui/icons';
+import { Flex, Text, Button, HStack } from '@chakra-ui/react';
+import { SettingsIcon, ChatIcon, CalendarIcon } from '@chakra-ui/icons';
 
 const Navbar = () => {
   const handleOpenSettings = () => {
@@ -20,23 +16,27 @@ const Navbar = () => {
       as="nav"
       align="center"
       justify="space-between"
-      wrap="wrap"
-      padding="1rem"
-      position="fixed"
-      width="100%"
-      top="0"
-      bg={'white'}
-      zIndex="1000"
-      height="60px"
+      px={4}
+      h="56px"
+      flexShrink={0}
+      bg="white"
+      borderBottomWidth="1px"
+      borderColor="gray.200"
     >
-      <Text as="h1" fontSize="2em" letterSpacing="tighter" className="font-zh">
+      <Text
+        as="h1"
+        fontSize={{ base: 'xl', md: '2xl' }}
+        letterSpacing="tight"
+        color="gray.800"
+        className="font-zh"
+      >
         懒人客服
       </Text>
 
-      <Box display={{ md: 'flex' }} gap="1rem">
+      <HStack spacing={1}>
         <Button
           size="sm"
-          mr={2}
+          variant="ghost"
           leftIcon={<CalendarIcon />}
           onClick={handleOpenDataview}
         >
@@ -44,7 +44,7 @@ const Navbar = () => {
         </Button>
         <Button
           size="sm"
-          mr={2}
+          variant="ghost"
           leftIcon={<ChatIcon />}
           onClick={handleOpenDataview}
         >
@@ -52,12 +52,13 @@ const Navbar = () => {
         </Button>
         <Button
           size="sm"
+          variant="ghost"
           leftIcon={<SettingsIcon />}
           onClick={handleOpenSettings}
         >
           设置
         </Button>
-      </Box>
+      </HStack>
     </Flex>
   );
 };

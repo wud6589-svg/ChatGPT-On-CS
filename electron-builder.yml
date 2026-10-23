@@ -1,7 +1,10 @@
 appId: org.lrhh123.cocs
 productName: 懒人客服
 asar: true
-asarUnpack: "**\\*.{node,dll}"
+asarUnpack:
+  - "**\\*.{node,dll}"
+  - "**/*.{node,dll}"
+  - "**/dist/main/strategy.js"
 compression: maximum
 files:
   - dist
@@ -12,6 +15,18 @@ win:
   requestedExecutionLevel: requireAdministrator
   target:
     - nsis
+mac:
+  category: public.app-category.business
+  identity: null
+  gatekeeperAssess: false
+  target:
+    - target: dmg
+      arch:
+        - arm64
+    - target: zip
+      arch:
+        - arm64
+  artifactName: "${productName}-${version}-${arch}.${ext}"
 nsis:
   oneClick: false
   perMachine: true

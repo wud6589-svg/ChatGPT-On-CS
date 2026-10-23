@@ -5,10 +5,10 @@ import InstanceListComponent from './InstanceListComponent';
 import { AppManagerProvider, useAppManager } from './AppManagerContext';
 
 const LoadingSkeleton = () => (
-  <Stack>
-    <Skeleton height="20px" />
-    <Skeleton height="20px" />
-    <Skeleton height="20px" />
+  <Stack w="240px" spacing={3}>
+    <Skeleton height="36px" borderRadius="md" />
+    <Skeleton height="36px" borderRadius="md" />
+    <Skeleton height="36px" borderRadius="md" />
   </Stack>
 );
 
@@ -38,11 +38,30 @@ const AppManagerContent = () => {
   }, [selectedAppId, selectedInstanceId, isSettingsOpen, setIsSettingsOpen]);
 
   if (isLoading || !data || !data.data) {
-    return <LoadingSkeleton />;
+    return (
+      <Flex
+        h="100%"
+        align="center"
+        justify="center"
+        bg="white"
+        borderWidth="1px"
+        borderColor="gray.200"
+        borderRadius="lg"
+      >
+        <LoadingSkeleton />
+      </Flex>
+    );
   }
 
   return (
-    <Flex h="42vh">
+    <Flex
+      h="100%"
+      bg="white"
+      borderWidth="1px"
+      borderColor="gray.200"
+      borderRadius="lg"
+      overflow="hidden"
+    >
       <AppListComponent />
       <InstanceListComponent />
     </Flex>

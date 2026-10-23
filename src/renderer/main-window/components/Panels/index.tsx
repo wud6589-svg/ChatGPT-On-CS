@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
-  Stack,
+  Box,
+  Flex,
   HStack,
   Tooltip,
   IconButton,
   Text,
-  VStack,
   Checkbox,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { FiPause, FiPlay } from 'react-icons/fi'; // 引入播放器图标
+import { FiPause, FiPlay } from 'react-icons/fi';
 import { useToast } from '../../hooks/useToast';
 import {
   getConfig,
@@ -17,6 +19,25 @@ import {
 } from '../../../common/services/platform/controller';
 import { DriverConfig } from '../../../common/services/platform/platform';
 import { useWebSocketContext } from '../../hooks/useBroadcastContext';
+
+type OptionProps = {
+  isChecked: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  label: string;
+  tip: string;
+};
+
+const Option = ({ isChecked, onChange, label, tip }: OptionProps) => (
+  <WrapItem>
+    <Checkbox isChecked={isChecked} onChange={onChange} colorScheme="teal">
+      <Tooltip label={tip} hasArrow openDelay={300}>
+        <Text as="span" fontSize="sm">
+          {label}
+        </Text>
+      </Tooltip>
+    </Checkbox>
+  </WrapItem>
+);
 
 const Panels = () => {
   const { toast } = useToast();
@@ -114,85 +135,85 @@ const Panels = () => {
     }
   };
 
+  const paused = driverSettings.hasPaused;
+
   return (
-    <Stack spacing={4}>
-      <HStack width="full" alignItems="center" justifyContent="space-between">
-        <VStack width="35%">
-          <Text fontSize="md">
-            按下{driverSettings.hasPaused ? '开启' : '关闭'}自动回复
-          </Text>
+    <Box
+      bg="white"
+      borderWidth="1px"
+      borderColor="gray.200"
+      borderRadius="lg"
+      px={{ base: 3, md: 4 }}
+      py={3}
+      flexShrink={0}
+    >
+      <Flex
+        align={{ base: 'stretch', md: 'center' }}
+        direction={{ base: 'column', md: 'row' }}
+        gap={4}
+      >
+        <HStack spacing={3} minW="200px">
           <IconButton
-            icon={driverSettings.hasPaused ? <FiPlay /> : <FiPause />}
-            aria-label="Pause/Play"
-            size="lg"
-            mt={2}
-            onClick={() =>
-              handleUpdateConfig({ hasPaused: !driverSettings.hasPaused })
-            }
+            icon={paused ? <FiPlay /> : <FiPause />}
+            aria-label={paused ? '开启自动回复' : '暂停自动回复'}
+            size="md"
+            onClick={() => handleUpdateConfig({ hasPaused: !paused })}
             isRound
-            colorScheme={driverSettings.hasPaused ? 'green' : 'red'}
+            colorScheme={paused ? 'green' : 'red'}
           />
-        </VStack>
-        <VStack width="65%" alignItems="flex-start">
-          <HStack>
-            <Checkbox
-              isChecked={driverSettings.hasKeywordMatch}
-              onChange={(e) =>
-                handleUpdateConfig({ hasKeywordMatch: e.target.checked })
-              }
-            >
-              <Tooltip label="将优先匹配关键词，未匹配的才去调用 GPT 接口">
-                关键词匹配
-              </Tooltip>
-            </Checkbox>
-            <Checkbox
-              isChecked={driverSettings.hasUseGpt}
-              onChange={(e) =>
-                handleUpdateConfig({ hasUseGpt: e.target.checked })
-              }
-            >
-              <Tooltip label="是否开启 GPT 回复，关闭后只会使用关键词回复">
-                GPT 回复
-              </Tooltip>
-            </Checkbox>
-          </HStack>
-          <HStack>
-            <Checkbox
-              isChecked={driverSettings.hasTransfer}
-              onChange={(e) =>
-                handleUpdateConfig({ hasTransfer: e.target.checked })
-              }
-            >
-              <Tooltip label="如果匹配到设定的关键词，将自动转人工">
-                关键词转人工
-              </Tooltip>
-            </Checkbox>
-            <Checkbox
-              isChecked={driverSettings.hasReplace}
-              onChange={(e) =>
-                handleUpdateConfig({ hasReplace: e.target.checked })
-              }
-            >
-              <Tooltip label="如果匹配到设定的关键词，将自动替换成自定义的关键词">
-                关键词替换
-              </Tooltip>
-            </Checkbox>
-          </HStack>
-          <HStack>
-            <Checkbox
-              isChecked={driverSettings.hasEscClose}
-              onChange={(e) =>
-                handleUpdateConfig({ hasEscClose: e.target.checked })
-              }
-            >
-              <Tooltip label="当按下 ESC 键时自动暂停">
-                按 ESC 键自动暂停
-              </Tooltip>
-            </Checkbox>
-          </HStack>
-        </VStack>
-      </HStack>
-    </Stack>
+          <Box>
+            <Text fontSize="sm" fontWeight="600" color="gray.800">
+              {paused ? '自动回复已暂停' : '自动回复进行中'}
+            </Text>
+            <Text fontSize="xs" color="gray.500">
+              {paused ? '点击按钮开始回复' : '点击按钮暂停回复'}
+            </Text>
+          </Box>
+        </HStack>
+        <Wrap spacingX={4} spacingY={2} flex="1">
+          <Option
+            isChecked={driverSettings.hasKeywordMatch}
+            onChange={(e) =>
+              handleUpdateConfig({ hasKeywordMatch: e.target.checked })
+            }
+            label="关键词匹配"
+            tip="将优先匹配关键词，未匹配的才去调用 GPT 接口"
+          />
+          <Option
+            isChecked={driverSettings.hasUseGpt}
+            onChange={(e) =>
+              handleUpdateConfig({ hasUseGpt: e.target.checked })
+            }
+            label="GPT 回复"
+            tip="是否开启 GPT 回复，关闭后只会使用关键词回复"
+          />
+          <Option
+            isChecked={driverSettings.hasTransfer}
+            onChange={(e) =>
+              handleUpdateConfig({ hasTransfer: e.target.checked })
+            }
+            label="关键词转人工"
+            tip="如果匹配到设定的关键词，将自动转人工"
+          />
+          <Option
+            isChecked={driverSettings.hasReplace}
+            onChange={(e) =>
+              handleUpdateConfig({ hasReplace: e.target.checked })
+            }
+            label="关键词替换"
+            tip="如果匹配到设定的关键词，将自动替换成自定义的关键词"
+          />
+          <Option
+            isChecked={driverSettings.hasEscClose}
+            onChange={(e) =>
+              handleUpdateConfig({ hasEscClose: e.target.checked })
+            }
+            label="按 ESC 键自动暂停"
+            tip="当按下 ESC 键时自动暂停"
+          />
+        </Wrap>
+      </Flex>
+    </Box>
   );
 };
 
