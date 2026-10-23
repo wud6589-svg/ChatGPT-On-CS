@@ -45,9 +45,20 @@ function App() {
           <ErrorBoundary>
             <Router>
               {isLoaded ? (
-                <Flex direction="column" minH="100vh">
+                <Flex
+                  direction="column"
+                  h="100vh"
+                  overflow="hidden"
+                  bg="gray.50"
+                >
                   <Navbar />
-                  <Box flex="1" mt={{ base: '4rem', md: '5rem' }}>
+                  <Box
+                    flex="1"
+                    minH={0}
+                    overflow="hidden"
+                    display="flex"
+                    flexDirection="column"
+                  >
                     <Routes>
                       <Route path="/" element={<HomePage />} />
                     </Routes>

@@ -1,39 +1,33 @@
 import React from 'react';
-import {
-  Box,
-  Text,
-  Stack,
-  useColorModeValue,
-  Tooltip,
-  Link,
-} from '@chakra-ui/react';
+import { Flex, Text, Link, Tooltip } from '@chakra-ui/react';
 
 const Footer = () => {
-  const bg = useColorModeValue('gray.100', 'gray.900');
-
   return (
-    <Box
+    <Flex
       as="footer"
       role="contentinfo"
-      maxW="7xl"
-      py="3"
-      px={{ base: '4', md: '8' }}
-      bg={bg}
+      align="center"
+      justify="space-between"
+      px={4}
+      h="36px"
+      flexShrink={0}
+      bg="white"
+      borderTopWidth="1px"
+      borderColor="gray.200"
+      fontSize="xs"
+      color="gray.500"
     >
-      <Stack>
-        <Box position={'absolute'}>
-          <Tooltip label="查看文档获取帮助">
-            <Link href="https://doc.lazaytools.top/docs" isExternal mr="auto">
-              📚文档
-            </Link>
-          </Tooltip>
-        </Box>
-
-        <Text fontSize="sm" alignSelf={{ base: 'center' }}>
-          &copy; {new Date().getFullYear()} lrhh123. All rights reserved.
-        </Text>
-      </Stack>
-    </Box>
+      <Tooltip label="查看文档获取帮助">
+        <Link
+          href="https://doc.lazaytools.top/docs"
+          isExternal
+          color="gray.600"
+        >
+          文档
+        </Link>
+      </Tooltip>
+      <Text>&copy; {new Date().getFullYear()} lrhh123</Text>
+    </Flex>
   );
 };
 

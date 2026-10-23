@@ -17,6 +17,8 @@ pnpm start
 
 开发和打包都会拉起 Mac 策略进程，Express 仍由 Electron 主进程监听（开发模式默认端口 `9999`）。首页应出现平台列表，其中包含 **拼多多**。
 
+主窗口在 macOS 上默认约 1040×760，可以拖拽缩放（最小约 920×640）。Windows 仍是原来的 528×1024，且不能缩放。开发模式不会自动打开 DevTools；需要时用菜单 View → Toggle Developer Tools，或按 Alt+Command+I。
+
 Windows 上的开发模式不变：仍然不在 `pnpm start` 里启动 `__main__.exe`，打包后的 Windows 程序仍用 `taskkill` 结束该进程。
 
 ## 添加拼多多店铺

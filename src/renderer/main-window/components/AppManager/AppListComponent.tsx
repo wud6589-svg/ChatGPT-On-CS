@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, VStack, Spinner, Text } from '@chakra-ui/react';
+import { Box, VStack, Spinner, Text, Flex } from '@chakra-ui/react';
 import AppCardComponent from './AppCardComponent';
 import SearchBarComponent from './SearchBarComponent';
 import { useAppManager } from './AppManagerContext';
@@ -16,11 +16,36 @@ const AppListComponent = () => {
   } = useAppManager();
 
   return (
-    <Box w="40%" bg="brand.50" display="flex" flexDirection="column">
-      <Box p={2} position="sticky" top="0" zIndex="1">
+    <Box
+      w={{ base: '168px', md: '232px' }}
+      flexShrink={0}
+      bg="gray.50"
+      borderRightWidth="1px"
+      borderColor="gray.200"
+      display="flex"
+      flexDirection="column"
+      minH={0}
+    >
+      <Box px={3} pt={3} pb={2}>
+        <Text
+          fontSize="xs"
+          fontWeight="600"
+          color="gray.500"
+          letterSpacing="0.06em"
+          mb={2}
+        >
+          平台
+        </Text>
         <SearchBarComponent onSearch={handleSearch} />
       </Box>
-      <VStack spacing={3} align="stretch" overflowY="auto" flex="1" p={4}>
+      <VStack
+        spacing={1}
+        align="stretch"
+        overflowY="auto"
+        flex="1"
+        px={2}
+        pb={3}
+      >
         {data?.data && data?.data.length > 0 ? (
           data.data.map((app, i) => (
             <AppCardComponent
@@ -37,15 +62,16 @@ const AppListComponent = () => {
             />
           ))
         ) : (
-          <Box
-            display="flex"
+          <Flex
             justifyContent="center"
             alignItems="center"
-            height="100%"
+            direction="column"
+            py={8}
+            color="gray.500"
           >
-            <Spinner size="xl" />
-            <Text ml={4}>启动服务中...</Text>
-          </Box>
+            <Spinner size="md" mb={3} />
+            <Text fontSize="sm">启动服务中...</Text>
+          </Flex>
         )}
       </VStack>
     </Box>

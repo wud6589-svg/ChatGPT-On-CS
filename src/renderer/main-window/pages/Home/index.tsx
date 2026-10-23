@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Stack, Divider } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import PageContainer from '../../../common/components/PageContainer';
 import { trackPageView } from '../../../common/services/analytics';
 import AppManager from '../../components/AppManager/index';
@@ -14,20 +14,30 @@ const HomePage = () => {
   }, []);
 
   return (
-    <PageContainer>
-      <Stack spacing={2}>
-        <Box>
+    <PageContainer
+      flex="1"
+      minH={0}
+      h="auto"
+      display="flex"
+      flexDirection="column"
+      p={0}
+      insertProps={{
+        flex: '1',
+        minH: 0,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Flex direction="column" flex="1" minH={0} gap={3} p={{ base: 3, md: 4 }}>
+        <Box flex="1.15" minH="220px">
           <AppManager />
         </Box>
-        <Divider my="4" />
-        <Box>
-          <Panels />
-        </Box>
-        <Divider my="4" />
-        <Box>
+        <Panels />
+        <Box flex="1" minH="150px">
           <LogBox />
         </Box>
-      </Stack>
+      </Flex>
     </PageContainer>
   );
 };

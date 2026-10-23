@@ -19,19 +19,28 @@ const SearchBarComponent = ({ onSearch }: SearchBarComponentProps) => {
   };
 
   return (
-    <InputGroup>
+    <InputGroup size="sm">
       <Input
-        placeholder="搜索"
+        placeholder="搜索平台"
         value={searchTerm}
+        bg="white"
+        borderRadius="md"
         onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            handleSearch();
+          }
+        }}
       />
       <InputRightElement>
         <IconButton
           icon={<SearchIcon />}
-          variant="ghost"
-          colorScheme="brand"
+          variant="unstyled"
           aria-label="Search"
-          size="sm"
+          size="xs"
+          color="gray.500"
+          minW={6}
+          h={6}
           onClick={handleSearch}
         />
       </InputRightElement>

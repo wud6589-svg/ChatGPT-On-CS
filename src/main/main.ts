@@ -63,7 +63,9 @@ const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 if (isDebug) {
-  require('electron-debug')();
+  // Keep the shortcut (Alt+Command+I / F12) and the View menu, but do not
+  // dock DevTools on launch. electron-debug opens them by default.
+  require('electron-debug')({ showDevTools: false });
 }
 
 // 安装开发者工具，如果网络不好，可以注释掉
@@ -102,11 +104,27 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  // Windows keeps the original portrait window. macOS uses a resizable
+  // desktop size so the sidebar, reply toggles, and log are not stacked
+  // into a phone-shaped column.
+  const windowBounds =
+    process.platform === 'darwin'
+      ? {
+          width: 1040,
+          height: 760,
+          minWidth: 920,
+          minHeight: 640,
+          resizable: true,
+        }
+      : {
+          width: 528,
+          height: 1024,
+          resizable: false,
+        };
+
   mainWindow = new BrowserWindow({
     show: false,
-    width: 528,
-    height: 1024,
-    resizable: false, // 防止用户调整窗口大小
+    ...windowBounds,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: app.isPackaged
